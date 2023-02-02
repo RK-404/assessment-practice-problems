@@ -28,7 +28,13 @@ const exampleCities = require("./cities");
       "Philadelphia",
     ];
  */
-function getAllCityNames() {}
+function getAllCityNames(cities) {
+  const cityNames = [];
+  for (const city of cities) {
+    cityNames.push(city.name);
+  }
+  return cityNames;
+}
 
 /**
  * getOldestCity()
@@ -41,7 +47,19 @@ function getAllCityNames() {}
  *  getOldestCity(cities);
  *  //> "Mexico City"
  */
-function getOldestCity() {}
+function getOldestCity(cities) {
+  if (!cities.length) {
+    return null;
+  }
+
+  let oldestCity = cities[0];
+  for (let i = 1; i < cities.length; i++) {
+    if (cities[i].yearFounded < oldestCity.yearFounded) {
+      oldestCity = cities[i];
+    }
+  }
+  return oldestCity.name;
+}
 
 /**
  * findByName()
@@ -65,7 +83,14 @@ function getOldestCity() {}
         id: 't870ol'
     }
  */
-function findByName() {}
+function findByName(cities, name) {
+  for (const city of cities) {
+    if (city.name === name) {
+      return city;
+    }
+  }
+  return null;
+}
 
 /**
  * filterByCountry()
@@ -87,21 +112,15 @@ function findByName() {}
     ]
     function filterByCountry() {}
 */
-function filterByCountry() {}
-
-/**
- * findBySportsTeam()
- * -----------------------------
- * Returns the name of the city with a sports team matching the one given. If the inputted `cities` array is empty or no cities have a matching sports team, return null.
- * @param {Object[]} cities - An array of cities. See the `cities.js` file for an example of this array.
- * @param {string} teamName - The name of a sports team (with "The" omitted if applicable).
- * @returns {string} The name of a city with a matching sports team.
- *
- * EXAMPLE:
- *  findBySportsTeam(cities, "Cubs")
- *  //> "Chicago"
- */
-function findBySportsTeam() {}
+function filterByCountry(cities, country) {
+  const filteredCities = [];
+  for (const city of cities) {
+    if (city.country.toLowerCase() === country.toLowerCase()) {
+      filteredCities.push(city);
+    }
+  }
+  return filteredCities;
+}
 
 /**
  * countByCountry()
@@ -119,7 +138,34 @@ function findBySportsTeam() {}
  *        "Cuba": 1
  *      }
  */
-function countByCountry() {}
+function countByCountry(cities) {
+  const countedCity = {};
+  for (const city of cities) {
+    countedCity[city.country] ? countedCity[city.country]++ : countedCity[city.country] = 1;
+  }
+  return countedCity;
+}
+
+/**
+ * findBySportsTeam()
+ * -----------------------------
+ * Returns the name of the city with a sports team matching the one given. If the inputted `cities` array is empty or no cities have a matching sports team, return null.
+ * @param {Object[]} cities - An array of cities. See the `cities.js` file for an example of this array.
+ * @param {string} teamName - The name of a sports team (with "The" omitted if applicable).
+ * @returns {string} The name of a city with a matching sports team.
+ *
+ * EXAMPLE:
+ *  findBySportsTeam(cities, "Cubs")
+ *  //> "Chicago"
+ */
+function findBySportsTeam(cities, teamName) {
+  for (const city of cities) {
+    if (city.sportsTeams.includes(teamName)) {
+      return city.name;
+    }
+  }
+  return null;
+}
 
 /**
  * getAverageFoundingYearForCapitals()
@@ -132,7 +178,19 @@ function countByCountry() {}
  *  getAverageFoundingYearForCapitals(cities);
  *  //> 1531
  */
-function getAverageFoundingYearForCapitals() {}
+function getAverageFoundingYearForCapitals(cities) {
+  let count = 0, sum = 0;
+  for (const city of cities) {
+    if (city.nationalCapital || city.stateOrProvinceCapital) {
+      count ++;
+      sum += city.yearFounded;
+    }
+  }
+  if (!count) {
+    return 0;
+  }
+  return Math.round(sum / count);
+}
 
 /**
  * getAllCitiesFoundedBeforeYear()
@@ -153,7 +211,15 @@ function getAverageFoundingYearForCapitals() {}
       },
     ];
  */
-function getAllCitiesFoundedBeforeYear() {}
+function getAllCitiesFoundedBeforeYear(cities, year) {
+  const cityArray = [];
+  for (const city of cities) {
+    if (city.yearFounded < year) {
+      cityArray.push(city);
+    }
+  }
+  return cityArray;
+}
 
 // Do not change anything below this line.
 module.exports = {
